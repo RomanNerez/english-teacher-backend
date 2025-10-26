@@ -14,6 +14,7 @@
       "@configs/*": ["configs/*"]
     },
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "typeRoots": ["src/app/ship/core/types"]
   }
 }

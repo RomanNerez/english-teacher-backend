@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
-import { apiRoutesLoader } from '../loaders/api-routes-loader';
-import { AppDataSource } from './database';
+import { AppDataSource } from '@ship/core/foundation/database';
+import { apiRoutesLoader } from '@ship/core/loaders/api-routes-loader';
+import { errorHandlersLoader } from '@ship/core/loaders/error-handlers-loader';
 
 export default class App {
     
@@ -16,6 +17,7 @@ export default class App {
         App.instance = instance;
 
         await apiRoutesLoader(instance);
+        errorHandlersLoader(instance);
 
         try {
             await AppDataSource.initialize()
