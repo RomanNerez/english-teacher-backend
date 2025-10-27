@@ -6,7 +6,6 @@ export default class TokensTransformer extends Transformer<TokensDTO> {
     transform(tokens: TokensDTO): Record<string, any> {
         return {
             access_token: tokens.accessToken,
-            refresh_token: tokens.refreshToken,
         };
     }
 }

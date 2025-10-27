@@ -16,7 +16,7 @@ export default class LoginAction extends ParentAction {
         const {
             accessToken,
             refreshToken
-        } = JWT.generateTokens({ id: user.id });
+        } = JWT.generateTokens({ id: user.id }, dto.remember);
 
         return new TokensDTO(accessToken, refreshToken);
     }

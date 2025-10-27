@@ -1,5 +1,6 @@
-import {Response as Response, Send} from 'express';
+import {CookieOptions, Response as Response, Send} from 'express';
 import Transformer from '@ship/core/transformers/transformer';
+import { SESSION_HTTP_ONLY, SESSION_LIFETIME, SESSION_SAME_SITE, SESSION_SECURE_COOKIE } from '@configs/session';
 
 export default class AppResponse {
 
@@ -12,6 +13,18 @@ export default class AppResponse {
 
     status(status: number = 200): this {
         this.res.status(status);
+
+        return this;
+    }
+
+    setCookieKey(key: string, val: string, options: CookieOptions = {}): AppResponse {
+        this.res.cookie(key, val, {
+            secure: SESSION_SECURE_COOKIE,
+            httpOnly: SESSION_HTTP_ONLY,
+            maxAge: SESSION_LIFETIME,
+            sameSite: SESSION_SAME_SITE,
+            ...options,
+        });
 
         return this;
     }

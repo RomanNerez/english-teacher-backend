@@ -2,4 +2,6 @@ export const ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_TOKEN_SECRET || 'acces
 export const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_TOKEN_SECRET || 'refresh_secret_key';
 
 export const ACCESS_TOKEN_EXPIRES_IN = process.env.JWT_ACCESS_TOKEN_EXPIRES_IN || '1h';
-export const REFRESH_TOKEN_EXPIRES_IN = process.env.JWT_REFRESH_TOKEN_EXPIRES_IN || '30d';
+export const REFRESH_TOKEN_EXPIRES_IN_SHORT_TERM = process.env.REFRESH_TOKEN_EXPIRES_IN_SHORT_TERM || '1h';
+export const REFRESH_TOKEN_EXPIRES_IN_LONG_TERM = process.env.REFRESH_TOKEN_EXPIRES_IN_LONG_TERM || '30d';
+

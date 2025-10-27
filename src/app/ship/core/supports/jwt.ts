@@ -1,21 +1,26 @@
 import jwt from 'jsonwebtoken';
+import ms from 'ms';
 import {
     ACCESS_TOKEN_SECRET,
     ACCESS_TOKEN_EXPIRES_IN,
     REFRESH_TOKEN_SECRET,
-    REFRESH_TOKEN_EXPIRES_IN
+    REFRESH_TOKEN_EXPIRES_IN_LONG_TERM,
+    REFRESH_TOKEN_EXPIRES_IN_SHORT_TERM
 } from '@configs/jwt';
-import ms from 'ms';
 
 export default class JWT {
 
-    static generateTokens(payload: any) {
+    static generateTokens(payload: Record<string, any>, remember: boolean = false) {
+        const refreshExpiredIn = remember ?
+            REFRESH_TOKEN_EXPIRES_IN_LONG_TERM : 
+            REFRESH_TOKEN_EXPIRES_IN_SHORT_TERM;
+
         const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
             expiresIn: ACCESS_TOKEN_EXPIRES_IN as ms.StringValue,
         });
 
         const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {
-            expiresIn: REFRESH_TOKEN_EXPIRES_IN as ms.StringValue,
+            expiresIn: refreshExpiredIn as ms.StringValue,
         });
 
         return { accessToken, refreshToken };
