@@ -21,7 +21,18 @@ export default class AppResponse {
         this.res.cookie(key, val, {
             secure: SESSION_SECURE_COOKIE,
             httpOnly: SESSION_HTTP_ONLY,
+            sameSite: SESSION_SAME_SITE,
             maxAge: SESSION_LIFETIME,
+            ...options,
+        });
+
+        return this;
+    }
+
+    clearCookie(key: string, options: CookieOptions = {}) {
+        this.res.clearCookie(key, {
+            secure: SESSION_SECURE_COOKIE,
+            httpOnly: SESSION_HTTP_ONLY,
             sameSite: SESSION_SAME_SITE,
             ...options,
         });
