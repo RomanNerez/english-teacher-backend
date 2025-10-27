@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import cookieParser from 'cookie-parser';
 import { AppDataSource } from '@ship/core/foundation/database';
 import { apiRoutesLoader } from '@ship/core/loaders/api-routes-loader';
 import { errorHandlersLoader } from '@ship/core/loaders/error-handlers-loader';
@@ -13,6 +14,7 @@ export default class App {
         const instance = express();
 
         instance.use(express.json());
+        instance.use(cookieParser());
         
         App.instance = instance;
 

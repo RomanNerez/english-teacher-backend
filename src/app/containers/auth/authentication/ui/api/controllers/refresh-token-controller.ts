@@ -1,27 +1,25 @@
 import {Request, Response} from 'express';
 import ParentApiController from '@ship/parents/controllers/api-controller';
-import LoginAction from '@containers/auth/authentication/actions/login-action';
-import LoginDTO from '@containers/auth/authentication/data/dtos/login-dto';
 import AppResponse from '@ship/core/http/response';
+import RefreshTokenAction from '@containers/auth/authentication/actions/refresh-token-action';
 import TokensTransformer from '@containers/auth/authentication/ui/api/transformers/tokens-transformer';
 import { SESSION_LIFETIME_REMEMBER } from '@configs/session';
 
-export default class LoginController extends ParentApiController {
+export default class RefreshTokenController extends ParentApiController {
 
-    constructor(private action = new LoginAction()) {
+    constructor(private action = new RefreshTokenAction()) {
         super();
     }
 
     async _invoke(req: Request, res: Response) {
-        const dto = LoginDTO.createFromRequest(req);
-        const result = await this.action.run(dto);
-
+        const result = await this.action.run(req.cookies.refresh_token);
+        
         return AppResponse
             .init(res)
             .status(200)
             .setCookieKey('refresh_token', result.refreshToken, {
-                maxAge: result.rememberMe ? SESSION_LIFETIME_REMEMBER : undefined
+                maxAge:result.rememberMe ? SESSION_LIFETIME_REMEMBER : undefined
             })
-            .create(result, new TokensTransformer);
+            .create(result, new TokensTransformer());
     }
 }

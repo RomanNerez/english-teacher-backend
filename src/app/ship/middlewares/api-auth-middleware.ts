@@ -1,8 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
+import FindUserByIdTask from '@containers/main/user/tasks/find-user-by-id-task';
+import AuthJwtPayloadDTO from '@containers/auth/authentication/data/dtos/auth-jwt-payload-dto';
 import CoreError from '@ship/core/errors/core-error';
 import AbstractMiddleware from '@ship/core/middlewares/middleware';
 import JWT from '@ship/core/supports/jwt';
-import FindUserByIdTask from '@containers/main/user/tasks/find-user-by-id-task';
 
 export default class ApiAuthMiddleware extends AbstractMiddleware {
     handler() {
@@ -14,9 +15,9 @@ export default class ApiAuthMiddleware extends AbstractMiddleware {
                 if (!token) throw new Error('Access token missing');
 
                 const payload = JWT.verifyAccessToken(token);
+                const authData = AuthJwtPayloadDTO.createFromJwtPayload(payload);
                 const task = new FindUserByIdTask();
-                const userId = (payload as any)?.id || 0;
-                const user = await task.run(userId);
+                const user = await task.run(authData.userId);
 
                 if (!user) throw new Error('User was not found');
                 
