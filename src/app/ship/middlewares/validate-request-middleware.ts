@@ -17,8 +17,8 @@ export default class ValidateRequestMiddleware extends AbstractMiddleware {
             let errors: Record<string, any> = {};
 
             if (schemas.body) {
-                const result = await schemas.body.safeParseAsync(req.body);
-                if (!result.success) errors = z.flattenError(result.error).fieldErrors;
+                const result = await schemas.body.safeParseAsync(req.body || {});
+                if (!result.success) errors = {...errors, ...z.flattenError(result.error).fieldErrors};
                 else req.body = result.data;
             }
 
@@ -28,8 +28,8 @@ export default class ValidateRequestMiddleware extends AbstractMiddleware {
             }
 
             if (schemas.params) {
-                const result = await schemas.params.safeParseAsync(req.params);
-                if (!result.success) errors.params = z.flattenError(result.error).fieldErrors;
+                const result = await schemas.params.safeParseAsync(req.params || {});
+                if (!result.success) errors = {...errors, ...z.flattenError(result.error).fieldErrors};
             }
 
             if (schemas.files && (req as any).files) {

@@ -1,6 +1,7 @@
-import { APP_ENV } from '@configs/app';
 import type { Express, Request, Response, NextFunction } from 'express';
+import { APP_ENV } from '@configs/app';
 import CoreError from '@ship/core/errors/core-error';
+import HttpError from '@ship/core/errors/http-error';
 
 function isApiRequest(req: Request): boolean {
   const accept = req.headers.accept ?? '';
@@ -17,13 +18,15 @@ function commonErrorHandler(err: CoreError | Error, req: Request, res: Response,
   const status = (err instanceof CoreError && err.statusCode) ? err.statusCode : 500;
   const message = err.message || 'Internal Server Error';
 
-  console.error('❌ [Error Handler]', {
-    path: req.path,
-    method: req.method,
-    status,
-    message,
-    stack: APP_ENV !== 'production' ? err.stack : undefined,
-  });
+  if (!(err instanceof HttpError)) {
+    console.error('❌ [Error Handler]', {
+      path: req.path,
+      method: req.method,
+      status,
+      message,
+      stack: APP_ENV !== 'production' ? err.stack : undefined,
+    });
+  }
 
   if (isApiRequest(req)) {
     return res.status(status).json({
