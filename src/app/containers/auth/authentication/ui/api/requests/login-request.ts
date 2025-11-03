@@ -5,7 +5,7 @@ export default class LoginRequest {
     body: z.object({
       email: z.email(),
       password: z.string().nonempty(),
-      // remember: z.boolean(),
+      remember: z.boolean(),
     }),
   };
 }

@@ -9,7 +9,6 @@ export default class MeUserController extends ParentApiController {
 
         return AppResponse
             .init(res)
-            .status(201)
             .create(req.user, new UserTransformer);
     }
 }

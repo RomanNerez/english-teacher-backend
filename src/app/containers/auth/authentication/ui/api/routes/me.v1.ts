@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import ApiAuthMiddleware from '@ship/middlewares/api-auth-middleware';
-import MeUserController from '@containers/main/user/ui/api/controllers/me-controller';
+import MeUserController from '@containers/auth/authentication/ui/api/controllers/me-controller';
 
 const router = require('express').Router();
 const apiAuthMiddleware = new ApiAuthMiddleware();
