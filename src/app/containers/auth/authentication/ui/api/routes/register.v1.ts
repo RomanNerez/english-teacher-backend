@@ -5,8 +5,11 @@ import ValidateRequestMiddleware from '@ship/middlewares/validate-request-middle
 
 const router = require('express').Router();
 const validateMiddleware = new ValidateRequestMiddleware();
+const middlewares = [
+    validateMiddleware.handler(RegisterRequest.schema)
+];
  
-router.post('/register', validateMiddleware.handler(RegisterRequest.schema), (req: Request, res: Response) => {
+router.post('/register', middlewares, (req: Request, res: Response) => {
     return new RegisterController()._invoke(req, res);
 });
 
